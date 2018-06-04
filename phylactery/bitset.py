@@ -24,7 +24,7 @@ class BitSet(object):
 
         # Properties
         self.capacity = capacity
-        self.__integers = np.zeros(true_capacity, dtype=np.int32)
+        self.__integers = np.zeros(true_capacity, dtype=np.uint32)
 
     def __len__(self):
         return self.capacity
