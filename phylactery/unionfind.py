@@ -92,12 +92,12 @@ class UnionFind(object):
         parent = self.find(x)
         return self.cardinalities[parent]
 
-    def components(self):
+    def components(self, min_size=1, max_size=float('inf')):
         n = self.capacity
         parents = self.parents
 
         # Using counting sort
-        # TODO: can reduce memory footprint in dense cases, by computing k
+        # NOTE: can reduce memory footprint in dense cases, by computing k
         counts = np.zeros(n, dtype=self.__dtype)
         sorted_indices = np.empty(n, dtype=self.__dtype)
 
@@ -120,6 +120,11 @@ class UnionFind(object):
         i = 0
         for _ in range(self.count):
             j = self.cardinalities[self.find(sorted_indices[i])]
+
+            if j < min_size or j > max_size:
+                i += j
+                continue
+
             component = sorted_indices[i:i + j]
             i += j
             yield component

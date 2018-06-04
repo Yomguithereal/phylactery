@@ -32,5 +32,12 @@ class TestBitSet(object):
 
         assert sets.count == 3
 
-        for i, component in enumerate(sets):
-            assert list(component) == COMPONENTS[i]
+        assert [list(c) for c in sets] == COMPONENTS
+
+        small_components = [list(c) for c in sets.components(max_size=2)]
+
+        assert small_components == COMPONENTS[:2]
+
+        large_components = [list(c) for c in sets.components(min_size=3)]
+
+        assert large_components == COMPONENTS[2:]
