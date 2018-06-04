@@ -120,7 +120,7 @@ class UnionFind(object):
         i = 0
         for _ in range(self.components):
             j = self.cardinalities[self.find(sorted_indices[i])]
-            component = np.array(sorted_indices[i:i + j], dtype=self.__dtype)
+            component = sorted_indices[i:i + j]
             i += j
             yield component
 
