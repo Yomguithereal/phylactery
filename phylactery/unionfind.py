@@ -28,7 +28,10 @@ class UnionFind(object):
         self.capacity = capacity
         self.components = capacity
         self.parents = np.arange(capacity, dtype=parents_dtype)
-        self.ranks = np.zeros(capacity)
+        self.cardinalities = np.ones(capacity, dtype=parents_dtype)
+        self.ranks = np.zeros(capacity, dtype=ranks_dtype)
+
+        self.__dtype = parents_dtype
 
     def __len__(self):
         return self.capacity
@@ -61,6 +64,7 @@ class UnionFind(object):
         y_root = self.find(y)
 
         parents = self.parents
+        cardinalities = self.cardinalities
         ranks = self.ranks
 
         # x & y are already in the same set
@@ -74,12 +78,51 @@ class UnionFind(object):
         y_rank = ranks[y]
 
         if x_rank < y_rank:
+            cardinalities[y_root] += cardinalities[x_root]
             parents[x_root] = y_root
         elif x_rank > y_rank:
+            cardinalities[x_root] += cardinalities[y_root]
             parents[y_root] = x_root
         else:
+            cardinalities[x_root] += cardinalities[y_root]
             parents[y_root] = x_root
             ranks[x_root] += 1
+
+    def cardinality(self, x):
+        parent = self.find(x)
+        return self.cardinalities[parent]
+
+    def __iter__(self):
+        n = self.capacity
+        parents = self.parents
+
+        # Using counting sort
+        # TODO: can reduce memory footprint in dense cases, by computing k
+        counts = np.zeros(n, dtype=self.__dtype)
+        sorted_indices = np.empty(n, dtype=self.__dtype)
+
+        for i in range(n):
+            counts[self.find(i)] += 1
+
+        total = 0
+
+        for i in range(n):
+            current_count = counts[i]
+            counts[i] = total
+            total += current_count
+
+        for i in range(n):
+            parent = self.find(i)
+            sorted_indices[counts[parent]] = i
+            counts[parent] += 1
+
+        # Iterating over components
+        i = 0
+        for _ in range(self.components):
+            j = self.cardinalities[self.find(sorted_indices[i])]
+            component = np.array(sorted_indices[i:i + j], dtype=self.__dtype)
+            i += j
+            yield component
 
     def __getitem__(self, x):
         return self.find(x)
