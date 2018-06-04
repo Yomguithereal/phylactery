@@ -125,6 +125,7 @@ class UnionFind(object):
                 i += j
                 continue
 
+            # NOTE: possibility to return islice
             component = sorted_indices[i:i + j]
             i += j
             yield component

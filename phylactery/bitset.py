@@ -57,6 +57,10 @@ class BitSet(object):
         else:
             self.integers[byte] |= (1 << pos)
 
+    def update(self, iterable):
+        for index in iterable:
+            self.set(index)
+
     def reset(self, index):
         if index >= self.capacity:
             raise IndexError

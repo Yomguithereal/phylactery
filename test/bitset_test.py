@@ -51,3 +51,12 @@ class TestBitSet(object):
         bitset.add(0)
 
         assert 0 in bitset
+
+        bitset = BitSet(4)
+
+        bitset.update((i for i in [2, 3]))
+
+        assert 0 not in bitset
+        assert 1 not in bitset
+        assert 2 in bitset
+        assert 3 in bitset
