@@ -26,7 +26,7 @@ class UnionFind(object):
 
         # Properties
         self.capacity = capacity
-        self.components = capacity
+        self.count = capacity
         self.parents = np.arange(capacity, dtype=parents_dtype)
         self.cardinalities = np.ones(capacity, dtype=parents_dtype)
         self.ranks = np.zeros(capacity, dtype=ranks_dtype)
@@ -34,7 +34,7 @@ class UnionFind(object):
         self.__dtype = parents_dtype
 
     def __len__(self):
-        return self.capacity
+        return self.count
 
     def find(self, x):
         y = x
@@ -71,7 +71,7 @@ class UnionFind(object):
         if x_root == y_root:
             return
 
-        self.components -= 1
+        self.count -= 1
 
         # x & y are not in the same set, we merge them
         x_rank = ranks[x]
@@ -92,7 +92,7 @@ class UnionFind(object):
         parent = self.find(x)
         return self.cardinalities[parent]
 
-    def __iter__(self):
+    def components(self):
         n = self.capacity
         parents = self.parents
 
@@ -118,18 +118,21 @@ class UnionFind(object):
 
         # Iterating over components
         i = 0
-        for _ in range(self.components):
+        for _ in range(self.count):
             j = self.cardinalities[self.find(sorted_indices[i])]
             component = sorted_indices[i:i + j]
             i += j
             yield component
 
+    def __iter__(self):
+        return self.components()
+
     def __getitem__(self, x):
         return self.find(x)
 
     def __repr__(self):
-        return '<%s capacity=%i components=%i>' % (
+        return '<%s capacity=%i count=%i>' % (
             self.__class__.__name__,
             self.capacity,
-            self.components
+            self.count
         )

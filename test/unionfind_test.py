@@ -26,11 +26,11 @@ class TestBitSet(object):
             sets.union(A, B)
 
         assert sets.capacity == 7
-        assert sets.components == 4
+        assert sets.count == 4
 
         sets.union(6, 1)
 
-        assert sets.components == 3
+        assert sets.count == 3
 
         for i, component in enumerate(sets):
             assert list(component) == COMPONENTS[i]
