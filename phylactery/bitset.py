@@ -24,7 +24,7 @@ class BitSet(object):
 
         # Properties
         self.capacity = capacity
-        self.__integers = np.zeros(true_capacity, dtype=np.uint32)
+        self.integers = np.zeros(true_capacity, dtype=np.uint32)
 
     def __len__(self):
         return self.capacity
@@ -37,7 +37,7 @@ class BitSet(object):
         byte = index >> 5
         pos = index & MODULO
 
-        return (self.__integers[byte] >> pos) & 1
+        return (self.integers[byte] >> pos) & 1
 
     def has(self, index):
         return self.get(index) == 1
@@ -53,9 +53,9 @@ class BitSet(object):
         pos = index & MODULO
 
         if not value:
-            self.__integers[byte] &= ~(1 << pos)
+            self.integers[byte] &= ~(1 << pos)
         else:
-            self.__integers[byte] |= (1 << pos)
+            self.integers[byte] |= (1 << pos)
 
     def reset(self, index):
         if index >= self.capacity:
@@ -64,7 +64,7 @@ class BitSet(object):
         byte = index >> 5
         pos = index & MODULO
 
-        self.__integers[byte] &= ~(1 << pos)
+        self.integers[byte] &= ~(1 << pos)
 
     def add(self, index):
         return self.set(index)
