@@ -88,6 +88,9 @@ class UnionFind(object):
             parents[y_root] = x_root
             ranks[x_root] += 1
 
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+
     def cardinality(self, x):
         parent = self.find(x)
         return self.cardinalities[parent]

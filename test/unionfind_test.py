@@ -28,6 +28,9 @@ class TestBitSet(object):
         assert sets.capacity == 7
         assert sets.count == 4
 
+        assert sets.connected(1, 2)
+        assert not sets.connected(4, 6)
+
         sets.union(6, 1)
 
         assert sets.count == 3
