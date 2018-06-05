@@ -7,7 +7,6 @@
 #
 import math
 import numpy as np
-from phylactery.utils import get_minimal_dtype_for_capacity
 
 
 class UnionFind(object):
@@ -21,8 +20,8 @@ class UnionFind(object):
 
     def __init__(self, capacity):
 
-        parents_dtype = get_minimal_dtype_for_capacity(capacity)
-        ranks_dtype = get_minimal_dtype_for_capacity(math.log2(capacity))
+        parents_dtype = np.min_scalar_type(capacity)
+        ranks_dtype = np.min_scalar_type(math.ceil(math.log2(capacity)))
 
         # Properties
         self.capacity = capacity
