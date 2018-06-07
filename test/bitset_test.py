@@ -60,3 +60,7 @@ class TestBitSet(object):
         assert 1 not in bitset
         assert 2 in bitset
         assert 3 in bitset
+
+        bitset.delete(2)
+
+        assert 2 not in bitset

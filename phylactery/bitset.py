@@ -5,7 +5,6 @@
 # A simple Python BitSet implementation relying on Numpy.
 #
 import math
-import numpy as np
 
 MODULO = 0x0000001f
 
@@ -24,7 +23,7 @@ class BitSet(object):
 
         # Properties
         self.capacity = capacity
-        self.integers = np.zeros(true_capacity, dtype=np.uint32)
+        self.integers = [0] * true_capacity
 
     def __len__(self):
         return self.capacity
@@ -72,6 +71,9 @@ class BitSet(object):
 
     def add(self, index):
         return self.set(index)
+
+    def delete(self, index):
+        return self.reset(index)
 
     def __getitem__(self, index):
         return self.get(index)

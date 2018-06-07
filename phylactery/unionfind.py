@@ -6,7 +6,6 @@
 # connected components.
 #
 import math
-import numpy as np
 
 
 class UnionFind(object):
@@ -20,17 +19,12 @@ class UnionFind(object):
 
     def __init__(self, capacity):
 
-        parents_dtype = np.min_scalar_type(capacity)
-        ranks_dtype = np.min_scalar_type(math.ceil(math.log2(capacity)))
-
         # Properties
         self.capacity = capacity
         self.count = capacity
-        self.parents = np.arange(capacity, dtype=parents_dtype)
-        self.cardinalities = np.ones(capacity, dtype=parents_dtype)
-        self.ranks = np.zeros(capacity, dtype=ranks_dtype)
-
-        self.__dtype = parents_dtype
+        self.parents = list(range(capacity))
+        self.cardinalities = [1] * capacity
+        self.ranks = [0] * capacity
 
     def __len__(self):
         return self.count
@@ -100,8 +94,8 @@ class UnionFind(object):
 
         # Using counting sort
         # NOTE: can reduce memory footprint in dense cases, by computing k
-        counts = np.zeros(n, dtype=self.__dtype)
-        sorted_indices = np.empty(n, dtype=self.__dtype)
+        counts = [0] * n
+        sorted_indices = [0] * n
 
         for i in range(n):
             counts[self.find(i)] += 1
