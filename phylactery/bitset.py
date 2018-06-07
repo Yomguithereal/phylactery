@@ -18,6 +18,8 @@ class BitSet(object):
 
     """
 
+    __slots__ = ('capacity', 'integers')
+
     def __init__(self, capacity):
         true_capacity = math.ceil(capacity / 32)
 

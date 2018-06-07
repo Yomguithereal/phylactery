@@ -17,6 +17,8 @@ class UnionFind(object):
 
     """
 
+    __slots__ = ('capacity', 'cardinalities', 'count', 'parents', 'ranks')
+
     def __init__(self, capacity):
 
         # Properties
