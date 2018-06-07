@@ -4,7 +4,7 @@ with open('./README.md', 'r') as f:
     long_description = f.read()
 
 setup(name='phylactery',
-      version='0.0.4',
+      version='0.1.0',
       description='Curated collection of data structures for Python.',
       long_description=long_description,
       long_description_content_type='text/markdown',
