@@ -119,13 +119,7 @@ class VPTree(object):
 
             mu = node.mu
 
-            if d < mu:
-                if node.left and d < mu + radius:
-                    stack.append(node.left)
-                if node.right and d >= mu - radius:
-                    stack.append(node.right)
-            else:
-                if node.right and d >= mu - radius:
-                    stack.append(node.right)
-                if node.left and d < mu + radius:
-                    stack.append(node.left)
+            if node.left and d < mu + radius:
+                stack.append(node.left)
+            if node.right and d >= mu - radius:
+                stack.append(node.right)
