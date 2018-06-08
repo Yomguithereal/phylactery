@@ -6,6 +6,7 @@
 # in metric space and perform efficient k-nn queries.
 #
 import numpy as np
+import random
 
 
 class VPTreeNode(object):
@@ -35,24 +36,31 @@ class VPTree(object):
     The VPTree class.
 
     Args:
-        capacity (number): total number of items to store.
+        items (iterable): Items to index in the tree.
+        distance (callable): Distance function to use.
+        selection (str, optional): Vantage point selection mode to choose
+            between "arbitrary", "random" and "spread". Defaults to "arbitrary".
 
     """
 
-    __slots__ = ('count', 'distance', 'root')
+    __slots__ = ('count', 'distance', 'root', 'selection')
 
-    def __init__(self, items, distance):
+    def __init__(self, items, distance, selection='arbitrary'):
 
         if type(items) is not list:
             items = list(items)
 
         # Properties
         self.distance = distance
-        self.root = VPTreeNode(items[0])
+        self.selection = selection
         self.count = len(items)
 
+        # Initializing root
+        index, indices = self.__select(list(range(self.count)), items)
+        self.root = VPTreeNode(items[index])
+
         # Building the tree
-        stack = [(self.root, list(range(1, self.count)))]
+        stack = [(self.root, indices)]
 
         while len(stack) != 0:
             vp, values = stack.pop()
@@ -76,14 +84,16 @@ class VPTree(object):
                     right.append(v)
 
             if len(right):
-                node = VPTreeNode(items[right.pop()])
+                index, right = self.__select(right, items)
+                node = VPTreeNode(items[index])
                 vp.right = node
 
                 if len(right):
                     stack.append((node, right))
 
             if len(left):
-                node = VPTreeNode(items[left.pop()])
+                index, left = self.__select(left, items)
+                node = VPTreeNode(items[index])
                 vp.left = node
 
                 if len(left):
@@ -91,6 +101,18 @@ class VPTree(object):
 
     def __len__(self):
         return self.count
+
+    def __select(self, indices, values):
+        selection = self.selection
+
+        if selection == 'arbitrary':
+            index = indices.pop()
+            return index, indices
+
+        if selection == 'random':
+            random.shuffle(indices)
+            index = indices.pop()
+            return index, indices
 
     def dfs(self):
         stack = [(0, self.root)]
