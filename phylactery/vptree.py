@@ -5,6 +5,7 @@
 # Python implementation of a Vantage Point Tree (VPTree) that can index items
 # in metric space and perform efficient k-nn queries.
 #
+import math
 import numpy as np
 import random
 
@@ -113,6 +114,32 @@ class VPTree(object):
             random.shuffle(indices)
             index = indices.pop()
             return index, indices
+
+        if selection == 'spread':
+            distance = self.distance
+
+            s = min(math.ceil(len(indices) * 0.1), 100)
+
+            P = random.sample(indices, s)
+            best_spread = float('-inf')
+            best_p = None
+
+            for p in P:
+                D = random.sample(indices, s)
+                M = [0] * s
+
+                for i in range(s):
+                    M[i] = distance(values[p], values[D[i]])
+
+                spread = np.var(M)
+
+                if spread > best_spread:
+                    best_spread = spread
+                    best_p = p
+
+            indices.pop(indices.index(best_p))
+
+            return best_p, indices
 
     def dfs(self):
         stack = [(0, self.root)]

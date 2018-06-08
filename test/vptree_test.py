@@ -54,3 +54,11 @@ class TestVPTree(object):
 
         assert set(tree.neighbors_in_radius('look', 2)) == RADIUS_2
         assert set(tree.neighbors_in_radius('look', 3)) == RADIUS_3
+
+    def test_spread_selection(self):
+        tree = VPTree(WORDS, levenshtein, selection='spread')
+
+        assert len(tree) == len(WORDS)
+
+        assert set(tree.neighbors_in_radius('look', 2)) == RADIUS_2
+        assert set(tree.neighbors_in_radius('look', 3)) == RADIUS_3
