@@ -6,13 +6,22 @@
 # in metric space and perform efficient k-nn queries.
 #
 import math
-import numpy as np
 import random
+from statistics import median, pvariance
 
 
 class VPTreeNode(object):
     """
-    Class representing a VPTree's node.
+    Class representing a Vantage Point Tree's node.
+
+    Args:
+        value (any): The node's value.
+
+    Attributes:
+        left (VPTreeNode): Left child.
+        right (VPTreeNode): Right child.
+        mu (int or float): Median threshold.
+        value (any): The node's value.
 
     """
 
@@ -34,7 +43,7 @@ class VPTreeNode(object):
 
 class VPTree(object):
     """
-    The VPTree class.
+    Class representing a Vantage Point Tree.
 
     Args:
         items (iterable): Items to index in the tree.
@@ -72,7 +81,7 @@ class VPTree(object):
                 distances[i] = distance(vp.value, items[v])
 
             # And we split at median
-            mu = np.median(distances)
+            mu = median(distances)
             vp.mu = mu
 
             left = []
@@ -131,7 +140,7 @@ class VPTree(object):
                 for i in range(s):
                     M[i] = distance(values[p], values[D[i]])
 
-                spread = np.var(M)
+                spread = pvariance(M)
 
                 if spread > best_spread:
                     best_spread = spread
@@ -170,5 +179,6 @@ class VPTree(object):
 
             if node.left and d < mu + radius:
                 stack.append(node.left)
+
             if node.right and d >= mu - radius:
                 stack.append(node.right)
