@@ -92,7 +92,6 @@ class UnionFind(object):
 
     def components(self, min_size=1, max_size=float('inf')):
         n = self.capacity
-        parents = self.parents
 
         # Using counting sort
         # NOTE: can reduce memory footprint in dense cases, by computing k
