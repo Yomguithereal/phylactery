@@ -6,6 +6,7 @@
 # connected components.
 #
 import math
+from collections import defaultdict
 
 
 class UnionFind(object):
@@ -91,41 +92,20 @@ class UnionFind(object):
         return self.cardinalities[parent]
 
     def components(self, min_size=1, max_size=float('inf')):
-        n = self.capacity
 
-        # Using counting sort
-        # NOTE: can reduce memory footprint in dense cases, by computing k
-        counts = [0] * n
-        sorted_indices = [0] * n
+        component_index = defaultdict(list)
 
-        for i in range(n):
-            counts[self.find(i)] += 1
+        for i in range(self.capacity):
+            root = self.find(i)
 
-        total = 0
+            cardinality = self.cardinalities[root]
 
-        for i in range(n):
-            current_count = counts[i]
-            counts[i] = total
-            total += current_count
-
-        for i in range(n):
-            parent = self.find(i)
-            sorted_indices[counts[parent]] = i
-            counts[parent] += 1
-
-        # Iterating over components
-        i = 0
-        for _ in range(self.count):
-            j = self.cardinalities[self.find(sorted_indices[i])]
-
-            if j < min_size or j > max_size:
-                i += j
+            if cardinality < min_size or cardinality > max_size:
                 continue
 
-            # NOTE: possibility to return islice
-            component = sorted_indices[i:i + j]
-            i += j
-            yield component
+            component_index[root].append(i)
+
+        yield from component_index.values()
 
     def __iter__(self):
         return self.components()

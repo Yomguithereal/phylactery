@@ -12,8 +12,8 @@ EDGES = [
 ]
 
 COMPONENTS = [
-    [3, 4],
     [5],
+    [3, 4],
     [0, 1, 2, 6]
 ]
 
@@ -35,12 +35,12 @@ class TestBitSet(object):
 
         assert sets.count == 3
 
-        assert [list(c) for c in sets] == COMPONENTS
+        assert sorted(sets, key=len) == COMPONENTS
 
-        small_components = [list(c) for c in sets.components(max_size=2)]
+        small_components = sorted(sets.components(max_size=2), key=len)
 
         assert small_components == COMPONENTS[:2]
 
-        large_components = [list(c) for c in sets.components(min_size=3)]
+        large_components = sorted(sets.components(min_size=3), key=len)
 
         assert large_components == COMPONENTS[2:]
