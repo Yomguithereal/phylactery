@@ -2,7 +2,8 @@
 # Phylactery BitSet
 # =============================================================================
 #
-# A simple Python BitSet implementation relying on Numpy.
+# A simple Python BitSet implementation. It seems it remains slower than a
+# cpython set which is a tad disappointing to say the least.
 #
 import math
 
