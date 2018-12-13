@@ -9,6 +9,8 @@ import math
 import random
 from statistics import median, pvariance
 
+# TODO: fails if only 1 item given
+
 
 class VPTreeNode(object):
     """
