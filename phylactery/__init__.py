@@ -9,4 +9,5 @@ if not PY2:
 
 # python2 compatible
 from phylactery.bitset import BitSet
+from phylactery.fuzzydict import FuzzyDict
 from phylactery.triedict import TrieDict
