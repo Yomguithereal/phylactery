@@ -12,7 +12,7 @@ clean:
 
 lint:
 	@echo Linting source code using pep8...
-	pycodestyle --ignore E501 $(SOURCE) test
+	pycodestyle --ignore E402,E501 $(SOURCE) test
 	@echo
 
 unit:
