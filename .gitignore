@@ -1,5 +1,6 @@
 __pycache__
 .DS_Store
+.python-version
 .pytest_cache
 *.pyx
 *.phylactery.egg-info
