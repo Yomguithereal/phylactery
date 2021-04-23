@@ -134,6 +134,9 @@ class TrieDict(object):
                 continue
 
             for char, child in node.children.items():
+                if self.__shape is not str:
+                    char = self.__shape([char])
+
                 stack.append((child, key + char))
 
     def keys(self):
@@ -149,6 +152,9 @@ class TrieDict(object):
                 continue
 
             for char, child in node.children.items():
+                if self.__shape is not str:
+                    char = self.__shape([char])
+
                 stack.append((child, key + char))
 
     def values(self):

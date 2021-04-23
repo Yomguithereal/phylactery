@@ -2,6 +2,8 @@
 # Phylactery TrieDict Unit Tests
 # =============================================================================
 import pytest
+from operator import itemgetter
+
 from phylactery import TrieDict
 
 
@@ -55,4 +57,15 @@ class TestBitSet(object):
         assert set(trie) == {('abc', 1), ('def', 2)}
 
         assert set(trie.keys()) == {'abc', 'def'}
+        assert set(trie.values()) == {1, 2}
+
+        trie = TrieDict(list)
+
+        trie[[3, 5, 1]] = 1
+        trie[[6, 7, 9]] = 2
+
+        assert sorted(trie.items(), key=itemgetter(1)) == [([3, 5, 1], 1), ([6, 7, 9], 2)]
+        assert sorted(trie, key=itemgetter(1)) == [([3, 5, 1], 1), ([6, 7, 9], 2)]
+
+        assert set('.'.join(str(i) for i in k) for k in trie.keys()) == {'3.5.1', '6.7.9'}
         assert set(trie.values()) == {1, 2}
